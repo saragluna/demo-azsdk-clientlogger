@@ -1,7 +1,5 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.2'
-	id 'io.spring.dependency-management' version '1.1.0'
 	id 'org.graalvm.buildtools.native' version '0.9.18'
 }
 
@@ -15,8 +13,7 @@ repositories {
 
 dependencies {
 	implementation 'com.azure:azure-core:1.36.0'
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'ch.qos.logback:logback-classic:1.4.5'
 }
 
 tasks.named('test') {
@@ -24,8 +21,11 @@ tasks.named('test') {
 }
 
 graalvmNative {
+	toolchainDetection = false
 	binaries {
 		main {
+			imageName = 'application'
+			mainClass = 'com.example.demoazsdkclientlogger.DemoAzsdkClientLoggerApplication'
 			buildArgs.add('--trace-class-initialization=ch.qos.logback.core.status.StatusBase,ch.qos.logback.classic.Logger,ch.qos.logback.core.util.Loader,ch.qos.logback.core.status.InfoStatus,ch.qos.logback.classic.Level,ch.qos.logback.core.util.StatusPrinter')
 		}
 	}
